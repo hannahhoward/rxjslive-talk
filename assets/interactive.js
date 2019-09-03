@@ -17,7 +17,7 @@ export default class Interactive extends Component {
   render() {
     const styles = {
       padding: 20,
-      background: 'black',
+      background: "black",
       minWidth: 300,
       marginTop: 20,
       textTransform: 'uppercase',
