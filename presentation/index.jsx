@@ -3,8 +3,8 @@ import React from 'react'
 import '../assets/prism-tomorrow-ally.css'
 
 // Import Spectacle Core tags
-import { Deck, Notes } from 'spectacle'
-
+import { Deck } from 'spectacle'
+import { Notes } from './slideTemplates/components.jsx'
 import AboutMeSlide from './slideTemplates/about-me-slide.jsx'
 import QuoteSlide from './slideTemplates/quote-slide.jsx'
 import DefinitionSlide from './slideTemplates/definition-slide.jsx'
@@ -12,21 +12,21 @@ import ListSlide from './slideTemplates/list-slide.jsx'
 import SimpleSlide from './slideTemplates/simple-slide.jsx'
 import ConceptSlide from './slideTemplates/concept-slide.jsx'
 import ImageSlide from './slideTemplates/image-slide.jsx'
-import DoubleImageSlide from './slideTemplates/double-image-slide.jsx'
 import QuotesSlide from './slideTemplates/quotes-slide.jsx'
 import colors from './slideTemplates/colors'
-import CodeSlide from 'spectacle-code-slide'
-import RxJsGraphSlide from './slideTemplates/rxjs-graph.jsx'
-//import { headerColor, textColor, bgColor } from "./slideTemplates/utilities.jsx";
+import CodeSlide from './slideTemplates/code-slide.jsx'
+import FancyCodeSlide from './slideTemplates/fancy-code-slide.jsx'
+// import { headerColor, textColor, bgColor } from "./slideTemplates/utilities.jsx";
 
 // Import image preloader util
 import preloader from 'spectacle/lib/utils/preloader'
-preloader({})
 import { headingColor, textColor } from './slideTemplates/utilities'
+import { BlockQuote, Quote, Cite } from './slideTemplates/components'
 // Import theme
 import createTheme from 'spectacle/lib/themes/default'
 import BoxBounce from './demos/box-bounce'
 import LoginForm from './demos/login-form'
+preloader({})
 
 // Require CSS
 require('normalize.css')
@@ -62,759 +62,948 @@ export default class Presentation extends React.Component {
         </AboutMeSlide>
         <DefinitionSlide
           fit={false}
-          term="Reactive Architecture"
-          definition="With Signal Graphs!"
-        >
+          colon={false}
+          term="Reactive Architecture!"
+          definition="(with signal graphs)">
           <Notes>
-            <p>
-              So this is a talk on Reactive Programming, and why I think it's a
-              great way to write frontend applications.
-            </p>
-            <p>It's in five parts. Here we go</p>
-          </Notes>
-        </DefinitionSlide>
-
-        <ImageSlide
-          title={
-            <div>
-              1.
-              <br /> Problem Statement
-            </div>
-          }
-          image="categoryis.gif"
-        >
-          <Notes>
-            Hello to all legendary children and welcome to the functional
-            reactive programming ball. Tonight, the category is
-          </Notes>
-        </ImageSlide>
-        <SimpleSlide fit={false} statement="What is a computer program?" />
-        <QuoteSlide
-          quote="A computer program is a sequence of instructions for performing a task designed to solve specific problems."
-          cite="Wikipedia"
-        >
-          <Notes>
-            A very important computer science textbook I refer to often defines
-            a computer program as a sequence of instructions for performing a
-            task designed to solve specific problems
-          </Notes>
-        </QuoteSlide>
-        <ImageSlide
-          image="todolist.gif"
-          title="'Sequence Of Instructions'"
-          text="Program = Todo List?"
-        >
-          <Notes>
-            So I always focus on the phrase 'Sequence of Instructions'. it
-            really makes programming feel almost like a todo list.
-          </Notes>
-        </ImageSlide>
-        <ImageSlide image="lesson-plan.jpg" title="Lesson Plan">
-          <Notes>
-            <p>
-              Or maybe if we were to imagine a classroom context, a program
-              sounds like a lesson plan.
-            </p>
-            <p>Are these the write metaphors for a computer program?</p>
-            <p>If we're writing a command line tool, then maybe.</p>
-            <p>
-              But if you're doing frontend programming, I think there's a more
-              apt metaphor for how your programs run...
-            </p>
-          </Notes>
-        </ImageSlide>
-        <ImageSlide
-          image="classroom-chaos.gif"
-          title="How computer programs actually run"
-        >
-          <Notes>
-            <p>
-              Frontend programs don't run sequentially. The flow of execution is
-              interrupted constantly by user input, responses from servers, a
-              million other things
-            </p>
-            <p>You have way less control -- it's like an unruly classroom</p>
-          </Notes>
-        </ImageSlide>
-        <DefinitionSlide
-          term="Interruptions"
-          definition="the heart of frontend programming"
-        >
-          <Notes>
-            <p>And that's really it.</p>
-            <p>
-              {' '}
-              Isn't the central challenge of programming complex frontend
-              applications dealing with interruptions?
-            </p>
+            <p>So let's talk about Reactive Architecture!</p>
           </Notes>
         </DefinitionSlide>
         <ImageSlide
-          image="kanye-taylor.gif"
-          title={
-            <div>
-              2. <br />A Brief History Of Interruptions
-            </div>
-          }
-        >
-          <Notes>
-            So let's talk briefly about a couple patterns we've used in the past
-            to deal with interruptions
-          </Notes>
-        </ImageSlide>
-        <ConceptSlide
-          inverted
-          concept="Technique 1"
-          description="Global Event Bus"
-        />
-        <CodeSlide
-          notes={
-            <div>
-              <p>
-                So the first kind of programming I ever did was dos game
-                writing, in C!
-              </p>
-              <p>
-                And one thing you could do in dos was override the BIOS --
-                basically to take over the keyboard
-              </p>
-              <p>
-                And your new keyboard code would collect keys and put them in a
-                buffer
-              </p>
-              <p>And then you whole program would be a loop like this one</p>
-              <p>
-                Except you'd actually on each step look at all your inputs, and
-                then process from there
-              </p>
-              <p>
-                The only issue was if you messed up your handler you could lock
-                the whole computer.
-              </p>
-            </div>
-          }
-          transition={[]}
-          lang="c"
-          code={require('raw-loader!../assets/interrupt.c')}
-          ranges={[
-            { loc: [0, 5], title: 'In The Beginning... C!' },
-            { loc: [20, 28], note: 'Override the damn BIOS!' },
-            { loc: [10, 19], note: 'Interrupt Service Request Code' },
-            { loc: [35, 50], note: 'The main loop' },
-            { loc: [44, 47], note: 'Read from the buffer and update state!' },
-            { loc: [50, 58], note: 'Ctrl+C will not save you...' }
-          ]}
-        />
-        <CodeSlide
-          transition={[]}
-          lang="c"
-          code={require('raw-loader!../assets/windows-loop.c')}
-          notes={
-            <div>
-              <p>
-                Windows improved upon this by having the operating system take
-                over some of the lower level input so you couldn't lock your
-                computer
-              </p>
-              <p>
-                But you can see that the basic loop is the same: read, process,
-                dispath messages
-              </p>
-            </div>
-          }
-          ranges={[
-            { loc: [0, 26], title: 'Windows event loop' },
-            { loc: [5, 14], note: 'Message loop = read, translate, dispatch' }
-          ]}
-        />
-        <CodeSlide
-          transition={[]}
-          lang="c"
-          notes={
-            <div>
-              <p>
-                The main thing your code would provide is procedure to handle
-                different messages
-              </p>
-              <p>
-                Which usually looked like a big switch statement where you did
-                something different based on the message passed
-              </p>
-            </div>
-          }
-          code={require('raw-loader!../assets/window-procedure.c')}
-          ranges={[
-            {
-              loc: [0, 12],
-              note: 'Window procedure = read message, update state'
-            },
-            {
-              loc: [2, 14],
-              note: 'Window procedure = read message, update state'
-            }
-          ]}
-        />
-        <SimpleSlide inverted fit={false} statement="1999?">
-          <Notes>
-            This brings us up to about 1999 when we left the global event bus in
-            the dust for better things. Or did we?
-          </Notes>
-        </SimpleSlide>
-        <CodeSlide
-          notes={
-            <div>
-              <p>
-                Notice core logic function is a switch statement that updates
-                state based on the type of dispatched messages... I dunno if
-                anyone's been writing code in the React ecosystem lately...
-              </p>
-            </div>
-          }
-          transition={['fade']}
-          lang="c"
-          code={require('raw-loader!../assets/window-procedure.c')}
-          ranges={[{ loc: [0, 16], note: 'Or did we?' }]}
-        />
-        <CodeSlide
-          transition={['fade']}
-          notes={
-            <div>
-              <p>
-                But that looks a lot like a Redux reducer. In fact, Redux
-                contains a lot of the global event bus pattern
-              </p>
-            </div>
-          }
-          lang="javascript"
-          code={require('!!raw-loader!../assets/reducer.js')}
-          ranges={[{ loc: [0, 16] }]}
-        />
-        <ImageSlide inverted image="prince.gif" title="No Shade To Redux">
-          <Notes>
-            And while using Redux may be programming like it's 1999 there are
-            some good reasons they went that way which we'll get to in a sec
-          </Notes>
-        </ImageSlide>
-        <ConceptSlide
-          inverted
-          concept="Technique 2"
-          description="Observer Pattern"
-        >
+          fit={false}
+          title="But first..."
+          image="rupaul.gif"
+          text="So Happy To Be Among My People!">
           <Notes>
             <p>
-              Now I want to talk about the Observer pattern, which is basically
-              how we've mostly written frontend applications in modern years
+              First though can I just say how happy I am to be Among folks like
+              me!
             </p>
-          </Notes>
-        </ConceptSlide>
-        <SimpleSlide statement="A Short Digression...">
-          <Notes>
-            But to explain it I need to make a short digression into the world
-            of influencers
-          </Notes>
-        </SimpleSlide>
-        <ImageSlide
-          image="writer-pipe.jpg"
-          title="Very Important Content Creator"
-        >
-          <Notes>
-            So let's say you're a content creator and you're wondering...
+            <p>
+              And by that for once I don't mean among my fellow queers but
+              rather among people who love them some reactive programming!
+            </p>
+            <p>
+              Seriously, I am excited to go really deep about How you actually
+              build applications with RxJS. Like big, real world applications.
+            </p>
           </Notes>
         </ImageSlide>
-        <SimpleSlide statement="How will people see my content?" />
-        <ImageSlide image="liam.jpg" title="Old School Way">
-          <Notes>
-            In the past it was pretty hard. You had to track down individually
-            anyone you wanted to view your content
-          </Notes>
-        </ImageSlide>
-        <QuotesSlide
-          transition={['fade']}
-          quotes={[
-            {
-              quote: 'I will make content',
-              cite: 'influencer'
-            },
-            {
-              quote: 'I will subscribe to your content',
-              cite: 'adoring fan'
-            },
-            {
-              quote: 'I made new content',
-              cite: 'influencer'
-            },
-            {
-              quote: 'I am notified about your content, and can watch it',
-              cite: 'adoring fan'
-            }
-          ]}
-        >
-          <Notes>
-            <p>
-              But now we have a better way. We have a contract. I, the creator,
-              promises to publish content, and you, my adoring fans, use one of
-              our many scary surveilance social media platforms to subscribe to
-              it
-            </p>
-            <p>
-              And then whenever I publish you get notified about my new content
-            </p>
-          </Notes>
-        </QuotesSlide>
-        <QuotesSlide
-          transition={['fade']}
-          quotes={[
-            {
-              quote: 'I will emit events',
-              cite: 'Subject'
-            },
-            {
-              quote: 'I will subscribe to your events',
-              cite: 'Observer'
-            },
-            {
-              quote: 'An event happened',
-              cite: 'Subject'
-            },
-            {
-              quote: 'I am notified about the event, and can handle it',
-              cite: 'Observer'
-            }
-          ]}
-        >
-          <Notes>
-            <p>
-              And that's basically the observer pattern. You have a subject --
-              something that promises to emit events in the future, and
-              observer, who subscribes to the events and then can act on them
-            </p>
-          </Notes>
-        </QuotesSlide>
-        <CodeSlide
-          lang="javascript"
-          notes={
-            <div>
-              <p>
-                You use this pattern in your every day programming and you may
-                not even know it. Let's imagine an example where you have two
-                dom elements, one thats a switch and another who's content you
-                want to change whenever the switch is clicked
-              </p>
-              <p>Here we have a reference to our switch</p>
-              <p>
-                And here we have a function to switch the text in a box from off
-                to on
-              </p>
-              <p>
-                We need to make the toggle switch change the text -- so we
-                subscribe to mouse clicks on the toggles switch
-              </p>
-              <p>
-                And this makes our switch text function into an observer, which
-                in javascript is an event listener. And that's the Observer
-                pattern!
-              </p>
-            </div>
-          }
-          code={require('!!raw-loader!../assets/eventListener.js')}
-          ranges={[
-            { loc: [0, 10], title: 'Real World Example' },
-            { loc: [7, 8], note: 'The Dom Element is our subject' },
-            { loc: [0, 5], note: 'We have a function to switch the toggle' },
-            {
-              loc: [8, 9],
-              note:
-                'Subscribe to mouse clicks on toggle switch, making modifyText into an observer'
-            },
-            {
-              loc: [0, 5],
-              note: 'Handle each mouse click by switching the toggle'
-            }
-          ]}
-        />
         <ListSlide
+          title="Last Year's RX Talk"
+          appear={false}
           ordered={false}
-          title="Observer Pattern vs Global Event Bus"
+          list={['20 Minutes What', '5 Minutes Why', '5 Minutes How']}>
+          <Notes>
+            <p>Last Year I gave a talk about RX at a bunch of conferences</p>
+            <p>It was like a lot of conference talks on RX.</p>
+            <p>
+              Most of my time was spent trying to explain what exactly this
+              thing is.
+            </p>
+            <p>
+              Which leaves very little time for why you'd use reactive
+              programming to build your apps and how to actually do it.
+            </p>
+          </Notes>
+        </ListSlide>
+        <ListSlide
+          title="Instead..."
+          appear={false}
+          ordered={false}
           list={[
-            '(+) Way simpler than global event bus',
-            '(+) Localized scope',
-            '(-) Have To Setup Subscriptions'
+            <span style={{ textDecoration: 'line-through' }}>
+              20 Minutes What
+            </span>,
+            '10 Minutes Why',
+            '20 Minutes How'
           ]}>
           <Notes>
             <p>
-              This is a great partern, cause it's way simple than the event bus.
-            </p>
-            <p>
-              And it's really much more localized... you focus just on the
-              events you want to listen to.
-            </p>
-            <p>
-              The downside is you have to setup subscriptions, which starts
-              small... but it can get complicated
+              I'm gonna try to get a bit deeper today on the why and the how --
+              why RX is a good model and some the tricks and ideas for doing it
+              well.
             </p>
           </Notes>
         </ListSlide>
-
-        <ConceptSlide concept="Take home quiz" description="Try drag and drop">
-          <Notes>
-            A good example of this is if you try to implement a drag and drop
-            with just mousedown, mouseup, and mousemove
-          </Notes>
-        </ConceptSlide>
         <ListSlide
-          title="Mixing concerns"
-          list={['Handling events', 'Subscribing observers']}
-        >
+          fit={false}
+          title="By the end of this talk you should be able to..."
+          appear={false}
+          list={[
+            'Describe role of RXJS in applications',
+            'Conceptualize Reactive Architecture Through Signal Graphs',
+            'Use some awesome tools to simplify your RxLife!'
+          ]}>
           <Notes>
-            What you'll find is you end up mixing concerns. Your event handlers
-            end up both handling events but also setting up other subscriptions.
-            And it gets to be a bit of a mess. So the observer pattern is great,
-            it's been around for a long time, it's reliable, but it's not
-            perfect.
+            <p>
+              I used to be a teacher and I like to begin my talks by listing the
+              ways I hope to empower you today...
+            </p>
+            <p>
+              First, I want help you identify the value of Observables as an
+              abstraction, particularly in the context of GUI front end apps
+            </p>
+            <p>
+              Next, I want you to understand software architecture in a reactive
+              context, through a pattern I call a Signal Graph
+            </p>
+            <p>
+              Finally I want to get down to nuts and bolts, and show you some Rx
+              tools that can make your life easier.
+            </p>
           </Notes>
         </ListSlide>
         <ImageSlide
-          image="redux-meme.jpg"
-          title="Redux Origin Story"
-          text="Is this what happened?"
-        >
-          <Notes>
-            Which leads me to believe the story of Redux getting created might
-            have looked like this.
-          </Notes>
-        </ImageSlide>
-        <SimpleSlide statement="Is there a better way?">
-          <Notes>
-            But maybe there's another way to do this, that offers the
-            convenience of the observer pattern with the flexibility of a global
-            event bus...
-          </Notes>
-        </SimpleSlide>
-        <ImageSlide
-          image="bridesmaids-walk.gif"
+          fit={false}
           title={
             <div>
-              3.
-              <br />
-              Functional Reactive Programming
+              Part 1<br />
+              Brief Frontend Review
             </div>
           }
-        >
-          <Notes>
-            That way is functional reactive programming. I'm gonna show you how
-            to use it to write frontends like a boss.
-          </Notes>
-        </ImageSlide>
-        <ImageSlide
-          image="classroom-chaos.gif"
-          title="Once upon a time..."
-          text="I taught middle school"
-        >
-          <Notes>
-            Let's rewind to our classroom analogy. So I actually taught middle
-            school once. I was was really bad at it. I don't want you to learn
-            from me. But I want to look at how good teachers handle this
-            situation...
-          </Notes>
-        </ImageSlide>
-        <ImageSlide image="jedi-teachers.jpg" title="Good Teachers = Jedi">
-          <Notes>
-            Good teachers are almost like jedi -- where every student seems to
-            be Obi-Wanned into thinking this is the lesson they're looking
-            for...
-          </Notes>
-        </ImageSlide>
-        <ImageSlide image="lesson-plan.jpg" title="Don't Start With A Plan...">
+          image="dog-butt.gif">
           <Notes>
             <p>
-              So how do they do it? Well first of all lesson plan is more of a
-              guide than a strict plan
+              Let's talk about frontends! Or, more specifically, the basic
+              components of a frontend GUI based application in todays world!
             </p>
           </Notes>
         </ImageSlide>
-        <SimpleSlide statement="and get interrupted.">
+        <ImageSlide
+          inverted
+          fit={false}
+          text="Frontends Interact With Users"
+          image="dog-request.jpg">
           <Notes>
-            <p>Cause if it were you'd get off track quickly</p>
+            The first big component of any frontend application is the part that
+            presents information to the user and gathers user input -- commonly
+            called the view layer
           </Notes>
-        </SimpleSlide>
-        <SimpleSlide fit={false} statement="Plan for interruptions and react!">
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          text="Frontends Interact With Backends And Services"
+          image="dogcall.jpg">
+          <Notes>
+            The next big thing a frontend does is talk to servers and other
+            external services. Or, in a native context -- system resources like
+            storage or settings. This layer of services is often called the
+            Model or Service Layer
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          text="Frontends translate data to user interfaces"
+          image="doge-meme.jpg">
           <Notes>
             <p>
-              Instead you can think of actual teaching as a series of almost
-              planned responses to interruptions. And really good teachers know
-              how to not just respond to interruptions but draw out lessons and
-              learnings from them, kind of folding these responses back into a
-              stream of learning that seems to flow almost inevitably to the key
-              objectives of the lesson... So it almost is like Jedi mind control
-              :)
+              The last big responsibilty of the frontend is to coordinate
+              between the users interactions with an interface and data and
+              responses coming from various services. This is actually often the
+              biggest job -- there's a lot of translation, combination, etc to
+              do here. And people are always trying new and better ways to
+              handle this -- so much so that this layer seems to get renamed
+              frequently. For today we'll call it ViewModel, though it's also
+              been called the Controller, Presenter, and Presentation Model.
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide inverted fit={false} title="MVVM" image="MVVM.png">
+          <Notes>
+            <p>
+              So our basic frontend architecture looks like this, commonly
+              called MVVM or model view view model.
+            </p>
+            <p>
+              We're going to spend today digging into the ViewModel, figuring
+              out what it does and how you use RX to build it.
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          image="wellbehaved.jpg"
+          text="Nothing happens without a good view model!">
+          <Notes>
+            <p>I like to think of view models as being like teachers</p>
+            <p>
+              Teachers are the heart of the classroom. They mediate between the
+              underlying learning materials and the student needs. They
+              coordinate everything that happens. People in the teaching
+              profession will often say no learning without a good teacher. And
+              just like teachers, the view model is the heart of the front end.
+            </p>
+          </Notes>
+        </ImageSlide>
+        <SimpleSlide statement="Example">
+          <Notes>
+            <p>
+              But what exactly is the view model doing? To really get into
+              specifics, we need a real world example, not a silly metaphor to
+              some frivolous endeavor like education.
+            </p>
+            <p>
+              It's time to look at important product you might really find in
+              today's tech industry
             </p>
           </Notes>
         </SimpleSlide>
-        <ConceptSlide concept="PSA" description="Pay Teachers" />
-        <SimpleSlide
+        <ImageSlide
+          inverted
           fit={false}
-          statement="How could we write programs reactively?"
-        >
+          title="Introducing ShamCoin!"
+          image="salesman.jpg"
+          text="Hottest new cryptocurrency startup. Will solve all problems.">
           <Notes>
-            So what if we wrote programs like this -- as planned reactions to
-            interruptions? What would it look like?
-          </Notes>
-        </SimpleSlide>
-        <DefinitionSlide
-          term="Y = X + 3"
-          colon={false}
-          definition="Consider this statement"
-        >
-          <Notes>
-            Let's think about the statement y=x+3. You've probably written
-            something like this in your programs at some point.
-          </Notes>
-        </DefinitionSlide>
-        <DefinitionSlide
-          term="Imperative meaning"
-          definition="Assign once the value for y by adding 3 to x"
-        >
-          <Notes>
-            In a traditional imperative program, this represents assignment. You
-            are assigning, a single time, the current value y of to the current
-            value of x plus 3
-          </Notes>
-        </DefinitionSlide>
-        <ImageSlide image="graph.svg" title="Math Meaning" text="An equation">
-          <Notes>
-            But the meaninb we associate with imperative programming is not the
-            only meaning. In math, this actually can describe an entire line on
-            a graph
+            <p>
+              I'd like to introduce you to ShamCoin, a hot new cyptocurrency
+              startup working to put public services that normally been free on
+              a paid private blockchain.
+            </p>
+            <p>
+              ShamCoin users can sign up for one more more ShamCoin accounts
+              with only a credit card. They can send make purchases for goods
+              and services from other users with only a 25% service fee. And
+              they can bid for priority appointments at the DMV so they can jump
+              ahead of the little people
+            </p>
           </Notes>
         </ImageSlide>
-        <DefinitionSlide
-          term="Reactive meaning"
-          definition="X is a value that can change over time. Y is always the value 3 greater than X"
-        >
-          <Notes>
-            In a reactive program, this statement would express a relationship
-            between Y and X. X is a value that can change over time, and Y is a
-            value that changes as X changes. Every time X changes, Y becomes the
-            new value plus 3
-          </Notes>
-        </DefinitionSlide>
-        <ImageSlide
-          image="xStream.svg"
-          title="X values over time"
-          text="a data stream of numbers over time"
-        >
-          <Notes>Let's imagine X as a stream of data values over time.</Notes>
-        </ImageSlide>
-        <ImageSlide
-          image="xyStream.svg"
-          title="Y values over time"
-          text="a data stream of numbers derived from another stream"
-        >
-          <Notes>
-            So y is another stream of data values, where each value is derived
-            from the last value of x
-          </Notes>
-        </ImageSlide>
-        <ImageSlide
-          image="mouseStream.svg"
-          title="Mouse clicks over time"
-          text="Stream of user input events"
-        >
-          <Notes>
-            And a stream isn't just numbers -- it could represent a user event,
-            like a mouse click
-          </Notes>
-        </ImageSlide>
-        <SimpleSlide
-          fit={false}
-          statement="Reactive programming in the real world?"
-        >
-          <Notes>
-            That's the theortical idea of reactive programming. But how can we
-            write this on our computers are that are just executing instructions
-            in sequence? We need a pattern where for each value that changes
-            over time, we could get notified that it's changing and respond.
-            Hmm... where have we heard of this?
-          </Notes>
-        </SimpleSlide>
-        <ImageSlide
-          image="runallnight.jpg"
-          title="Observer pattern!"
-          text="Only better..."
-        >
-          <Notes>The Observer Pattern! We just need to extend it a bit!</Notes>
-        </ImageSlide>
-        <DefinitionSlide
-          term="Observable"
-          definition="A value that changes over time, that we can listen to changes on"
-        >
-          <Notes>
-            So let's introduce the Observable. The observable is sorta like our
-            traditional subject from the observer pattern, but it can represent
-            anything. It just represents any value that changes over time.
-          </Notes>
-        </DefinitionSlide>
         <CodeSlide
+          fit={false}
+          inverted
+          title="Calculate Values"
+          source="totalAccountValue.js">
+          <Notes>
+            <p>
+              Let's say we want to show the users current account balance in
+              their preferred currency. We might write a function in our view
+              model that looks something like this -- it takes various input
+              values, does some calculations on them, and produces an output.
+              It's pretty simple - it's a pure function that helps transform
+              data into a format we actually want to display.
+            </p>
+            <p>
+              This is a pretty common action of ViewModels -- we transform data
+              in one format to another format with some kind of calculation
+              function
+            </p>
+          </Notes>
+        </CodeSlide>
+        <CodeSlide
+          fit={false}
+          inverted
+          title="Keep track of state"
+          source="bidAmount.js">
+          <Notes>
+            <p>
+              Often our view model has to maintain some kind of state for user
+              interface. We might trust our server or a hard drive to persist
+              our state, but our view model will handle maintaining our state in
+              real-time.
+            </p>
+            <p>
+              We can imagine there's a form for adjusting a bid for a DMV
+              appointment, where we can increase and decrease our bid, or set it
+              directly, or reset a bid to 0
+            </p>
+            <p>
+              In the recent past we often would maintain state with some kind of
+              object that contained data and presented methods for manipulating
+              that data.
+            </p>
+            <p>
+              These days we often express state as a function that takes the
+              last state value and an action an returns a new state. You're
+              probably most familiar with this pattern if you've used redux
+            </p>
+          </Notes>
+        </CodeSlide>
+        <CodeSlide
+          fit={false}
+          inverted
+          title="Pass user requests to services"
+          source="sendShamCoin.js">
+          <Notes>
+            <p>
+              Finally our view model often does a lot of ferrying of information
+              back and forth with the service layers. Here we might submit a
+              money transfer to a server and return the actual amount
+              transferred after a service fee.
+            </p>
+          </Notes>
+        </CodeSlide>
+        <ImageSlide
+          fit={false}
+          inverted
+          title="View Model is easy!"
+          image="abc.jpg"
+          text="It's just functions, right?">
+          <Notes>
+            <p>
+              There are probably other edge cases, but this covers a whole lot
+              of what view models do
+            </p>
+            <p>And honestly these things don't look so hard</p>
+            <p>
+              If we can express the whole view model as a series of simple
+              functions, we can easily test it. The logic becomes easy to
+              express and clear to read for other programmers.
+            </p>
+            <p>
+              So is ShamCoin is ready to secure series B funding from the
+              founders college buddies from Stanford and become the next billion
+              dollar unicorn?
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          image="wellbehaved.jpg"
+          title="Not so fast!">
+          <Notes>
+            <p>But wait!</p>
+            <p>
+              Before we buy that roadster and book our burning man camp, let's
+              return to the teaching metaphor for a second
+            </p>
+            <p>
+              Can we express what the teachers does as a pure set of rules with
+              a predictable outcome?
+            </p>
+            <p>
+              Maybe in this well behaved classroom we could. If the students are
+              predictable and the lesson is great and everything goes exactly
+              according to plan, then maybe.
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          fit={false}
+          inverted
+          image="classroom-chaos.gif"
+          title="#TheRealWorld">
+          <Notes>
+            <p>But what about this classroom?</p>
+            <p>This is what my classroom looked like when I taught.</p>
+            <p>I wasn't very good at it.</p>
+            <p>And it wasn't just me or the students.</p>
+            <p>
+              Believe or not, for three months, I taught a middle school class
+              on computer skills with no actual computers.
+            </p>
+            <p>
+              It's a long story and you can ask me about it over drinks sometime
+            </p>
+            <p>But this is what an actual frontend program looks like</p>
+            <p>You don't control the flow of execution.</p>
+            <p>You get interrupted.</p>
+            <p>User input arrive when it's ready.</p>
+            <p>Servers respond when they're ready, if they respond at all</p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          image="kanye-taylor.gif"
+          title="#FrontendLife">
+          <Notes>
+            <p>
+              So what can we do? How do write a program that is essentially a
+              series of rude interruptions and things not going as planned?
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          fit={false}
+          title={
+            <div>
+              Part 2<br />
+              Contextful Programming
+            </div>
+          }
+          image="russiandoll.jpg">
+          <Notes>
+            <p>We're finally ready to start thinking about why RX</p>
+            <p>
+              And I want to introduce the why of RX through a concept called
+              contextful programming
+            </p>
+            <p>
+              If you google this phrase, you won't find much, and it's cause my
+              co-worker Michael Avila came up with it
+            </p>
+            <p>
+              I think it's super cool and explains a lot, to me, about why we
+              use Observables and other tools like them. And I hope one day you
+              will be able to google it and see his picture next to it.
+            </p>
+          </Notes>
+        </ImageSlide>
+        <CodeSlide
+          fit={false}
+          inverted
+          title="Let's revisit..."
+          source="totalAccountValue.js">
+          <Notes>
+            <p>Let's revisit our calculation function.</p>
+            <p>
+              All most all these values probably came from a server. Which means
+              we don't know when we'll get them. Also we don't know if they'll
+              have values. They could be errors. And the errors might be
+              different type. Even the currency might be an error.
+            </p>
+            <p>
+              Let's leave the when out of it for now and just say that our if
+              any of our accounts are in error, the whole thing is an error
+            </p>
+          </Notes>
+        </CodeSlide>
+        <CodeSlide
+          fit={false}
+          inverted
+          title="Eek!"
+          zoom={1}
+          source="totalAccountValueWithErrors.js">
+          <Notes>
+            <p>Wow. So that font size went down.</p>
+            <p>
+              The length of the function doubled and we're spending all the
+              extra lines on checks for errors
+            </p>
+            <p>The truth is we're not even dealing with errors here.</p>
+            <p>
+              All this extra effort is really to deal with the one case we care
+              about -- where everything is a success.
+            </p>
+            <p>But that logic is lost in a sea of error checks</p>
+          </Notes>
+        </CodeSlide>
+        <FancyCodeSlide
           notes={
             <div>
-              <p>Let's look at how observables work</p>
               <p>
-                Here we have x, and x is an observable. So we can subscribe to
-                x, and any time x emits a new value, the function we give to
-                subscribe will get called
+                What if we wrapped our parameters in a little class we'll call a
+                result?
               </p>
               <p>
-                And if we wanted to print the values of y we could just
-                subscribe and print the value plus 3
+                A result is just a value that's either a success or a failure.
+                And you can see we have some very simple methods to make results
+                of each type
               </p>
               <p>
-                But what if we wanted to listen to y? We'd need a way to
-                transform an x oberservable to a y observable
-              </p>
-              <p>Let's rewind and imaging x is just an array of numbers.</p>
-              <p>
-                If we want to produce an array of y values, we have an operation
-                to do this -- most languages call it map
+                We have some simple methods to determine if a result is a
+                success or a failure
               </p>
               <p>
-                The great thing is we have the same concept with of observables.
-                We can produce y with map. The difference is map is a
-                transformation on values over time. As each new x value is
-                produced, a new y value is produced by applying the
-                transformation function
+                And now we have a map function. Which wow-- a map isn't just for
+                arrays and observables? Pretty cool! Here our map function takes
+                a transformation and applies it to the results value, but only
+                if the result is a success, and then puts it back inside a new
+                result
+              </p>
+              <p>
+                Now I'm gonna ask you to take a leap of faith with me and let's
+                define a "Super Map" function we'll call apply. Apply is just
+                like map, but the transformation itself is wrapped in a result.
+                We'll see how this is useful in a second
               </p>
             </div>
           }
+          transition={[]}
           lang="javascript"
-          code={require('!!raw-loader!../assets/simpleObservable.js')}
+          source="result.js"
           ranges={[
-            { loc: [0, 7], title: "Value as 'Observable'" },
-            {
-              loc: [0, 1],
-              note: 'Subscribe to X as it changes, write its values'
-            },
-            { loc: [2, 3], note: 'Outputs the right values for Y' },
-            {
-              loc: [4, 5],
-              note: 'What if we want to listen to Y?'
-            },
-            {
-              loc: [6, 7],
-              note: 'If x were an array of numbers...'
-            },
-            {
-              loc: [8, 9],
-              note: 'We could derive y array with map'
-            },
-            {
-              loc: [10, 13],
-              note: 'If x is an observable, we use map too!'
-            }
+            { loc: [0, 16], title: 'A Result Class!' },
+            { loc: [1, 3], note: 'Static Methods To Make A Result' },
+            { loc: [4, 11], note: 'Constructor and utility methods' },
+            { loc: [12, 13], note: 'A map function' },
+            { loc: [13, 15], note: 'Apply function = Map++' }
           ]}
         />
+        <CodeSlide
+          fit={false}
+          inverted
+          title="The Results Are In!"
+          source="totalAccountValueResult.js">
+          <Notes>
+            <p>
+              Armed with our new result class, let's go back to our calculation
+            </p>
+            <p>Wow this isn't so bad we're back to regular size font!</p>
+            <p>
+              There's really only a few lines that are different from our
+              function which would have failed with errors
+            </p>
+            <p>
+              Now, mind you there's a few lines in here that are a bit
+              complicated.
+            </p>
+          </Notes>
+        </CodeSlide>
+        <CodeSlide
+          zoom={4}
+          fit={false}
+          inverted
+          title="It's Magic!"
+          source="keyLine.js">
+          <Notes>
+            <p>
+              You could write an entire essay on what's going on in line inside
+              the reducer, but sufficed to say it's unwrapping on result,
+              partially applying an add operation, then unwrapping the other
+              result, and completing the add operation, assuming both are
+              successes.
+            </p>
+            <p>
+              Once again, buy me a drink if you wanna talk about this all night.
+            </p>
+            <p>
+              But if you could get used to this slightly unfamiliar syntax,
+              could you see the value of writing things this way?
+            </p>
+          </Notes>
+        </CodeSlide>
+        <DefinitionSlide
+          inverted
+          fit={false}
+          term="Context"
+          definition="Any type that wraps another value so you can work with it
+        declaritively">
+          <Notes>
+            So our result class is an example of a context. It's a type that
+            wraps another value, and abstracts away some of the difficults of
+            working with that value.
+          </Notes>
+        </DefinitionSlide>
+        <ImageSlide
+          image="box.png"
+          inverted
+          fit={false}
+          title="In other words...">
+          <Notes>
+            Basically a context is a box. And before you say a context is too
+            weird.... really, you know this.
+          </Notes>
+        </ImageSlide>
+        <CodeSlide
+          zoom={4}
+          fit={false}
+          inverted
+          title="Ever seen this?"
+          source="numberArray.js">
+          <Notes>You've worked with contexts before</Notes>
+        </CodeSlide>
+        <DefinitionSlide
+          inverted
+          fit={false}
+          term="Array"
+          definition="A context for working with values that are in a collection">
+          <Notes>
+            An array is a context that helps you work with values in a
+            collection
+          </Notes>
+        </DefinitionSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          title="Yup. It's a box"
+          image="person_in_box.jpg">
+          <Notes>Arrays are definitely boxes</Notes>
+        </ImageSlide>
+        <CodeSlide
+          fit={false}
+          inverted
+          title="Revisiting API Calls"
+          source="sendShamCoin.js">
+          <Notes>
+            <p>
+              What about our function to talk to our backend. Does that api call
+              look like it returns immediately?
+            </p>
+          </Notes>
+        </CodeSlide>
+        <CodeSlide
+          fit={false}
+          inverted
+          title="Solve With Callbacks?"
+          source="sendShamCoinCb.js">
+          <Notes>
+            <p>
+              How will we solve this? Maybe we we'll pass a callback... and make
+              our code progressively hard to read
+            </p>
+          </Notes>
+        </CodeSlide>
+        <CodeSlide
+          fit={false}
+          inverted
+          title="Or Keep Our Promises"
+          source="sendShamCoin.js">
+          <Notes>
+            <p>
+              Or maybe it's not so bad, cause maybe our API call has been
+              written to return a promise.
+            </p>
+          </Notes>
+        </CodeSlide>
+        <DefinitionSlide
+          inverted
+          fit={false}
+          term="Promise"
+          definition="A context for working with a value that isn't available yet">
+          <Notes>
+            You know Promises. That thing you work with in your programming life
+            all the time that wrap the return values of asynchronous operations.
+          </Notes>
+        </DefinitionSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          title="Promises"
+          image="Boxy-but-good.jpg">
+          <Notes>Yea, promises are pretty boxy and they work pretty well</Notes>
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          title="Beware"
+          text="Haskell shall not be named"
+          image="voldemort.jpg">
+          <Notes>
+            <p>
+              Now, a few of you in the audience may know where I'm getting a lot
+              of this from
+            </p>
+            <p>
+              And to be honest, I'm conspicuously avoiding diving into the deep
+              end of functional programming
+            </p>
+            <p>
+              There is probably someone here in the audience who feels boxes
+              don't describe the full truth here
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          image="category-theory.png"
+          title="I've made a terrible mistake">
+          <Notes>
+            <p>
+              To which I say, I would like for someone to know what the heck I'm
+              talking about
+            </p>
+            <p>
+              Seriously, you wanna talk about abstract algebraic structures?
+            </p>
+            ><p>To that I say...</p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          image="portlandia-box.jpg"
+          title="Put"></ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          image="person_in_box_2.jpg"
+          title="A"></ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          image="box-dog.jpg"
+          title="Box"></ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          image="box-on-head.jpg"
+          title="On It"></ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          image="imac-box.jpg"
+          title="One More Box...">
+          <Notes>
+            <p>
+              But we're not quite done, cause we still have one very important
+              box to talk about.
+            </p>
+          </Notes>
+        </ImageSlide>
+        <DefinitionSlide
+          inverted
+          fit={false}
+          term="Observable"
+          definition="A context that wraps a value that will change over time">
+          <Notes>
+            <p>Yes. I'm talking about the reason we're here.</p>
+            <p>
+              Observable are a very special context cause it deals with values
+              that change over time
+            </p>
+          </Notes>
+        </DefinitionSlide>
+        <ImageSlide
+          fit={false}
+          inverted
+          image="classroom-chaos.gif"
+          title="Reminder...">
+          <Notes>
+            <p>
+              Observables address one of our biggest concerns in frontend
+              programming: not being able to control when things happen
+            </p>
+            <p>And that makes them really powerful.</p>
+            <p>
+              Especially in the Rx context where our builtin toolbelt of things
+              they can do is so large we've spent half the conference just going
+              over different operators.
+            </p>
+          </Notes>
+        </ImageSlide>
+        <CodeSlide
+          fit={false}
+          inverted
+          title="Still stuck"
+          source="totalAccountValueResult.js">
+          <Notes>
+            <p>
+              Let's revisit our calculation one more time. It handles errors,
+              but we still have no idea when these values become available (or
+              definitely error).
+            </p>
+            <p>
+              In fact they could become available at totally different times!
+            </p>
+            <p>
+              What if we imagine these parameters are all observables? Could we
+              make this balance function always express the right value over
+              time?
+            </p>
+          </Notes>
+        </CodeSlide>
+        <CodeSlide
+          fit={false}
+          inverted
+          zoom={4}
+          title="A very powerful line of code"
+          source="combineLatest.js">
+          <Notes>
+            <p>
+              Basically, every time a new value becomes available for one of
+              these accounts or the currency changes, we want to redo our
+              calculation.
+            </p>
+            <p>
+              And basically, Rx has a single operator to do all that. We use
+              combineLatest plus a map, and while I'm glossing over some
+              possible pitfalls, this basically can convert our function into an
+              always up to date reflection of the current totalAccountValue.
+            </p>
+          </Notes>
+        </CodeSlide>
+        <CodeSlide
+          fit={false}
+          inverted
+          zoom={1}
+          title="About Time"
+          source="totalAccountValueFinal.js">
+          <Notes>
+            <p>
+              So here's our final version. It's a bit longer, but it does so
+              much more.
+            </p>
+            <p>
+              And actually while we left both the observables and the results
+              inside the function, the operations are generalizable enough that
+              we could take an abiritrary function to calculate from values and
+              wrap all the parameters in results and observables and handle all
+              the unwrapping outside the logic of the function itself, leaving
+              us with just our original implementation.
+            </p>
+          </Notes>
+        </CodeSlide>
+        <CodeSlide
+          fit={false}
+          inverted
+          title="What about state?"
+          source="bidAmount.js">
+          <Notes>
+            <p>
+              What about these reducers? It sure would be nice if we could get
+              rid of that whole third party library we're using just to keep our
+              state over time.
+            </p>
+            <p>
+              And it'd be even cooler if we could make our code simpler in the
+              process.
+            </p>
+          </Notes>
+        </CodeSlide>
+        <ConceptSlide
+          fit={false}
+          inverted
+          concept="Spoiler Alert"
+          description="RxJS is a 3rd party library"
+        />
+        <CodeSlide
+          fit={false}
+          inverted
+          zoom={2}
+          title="Reducer ❤️ observables"
+          source="reducerForObservables.js">
+          <p>
+            This is a function I wrote that I'm not gonna dig deep on, but the
+            basic idea is rather than deal with the hole mess of a switch
+            statement, I want to use single functions that update the state for
+            each type of message. And then I'm gonna use observables to
+            programmatically wrap up those messages so that each action is
+            triggered by a single observable, which calls the right function to
+            update the state.
+          </p>
+        </CodeSlide>
+        <CodeSlide
+          fit={false}
+          inverted
+          title="Easier to just show..."
+          source="bidAmountRx.js">
+          <Notes>
+            <p>
+              While that last slide was a whole lot of weird, the yield is
+              pretty awesome
+            </p>
+            <p>
+              Look at this super simple declarative syntax we have for building
+              a reducer for a set of observables
+            </p>
+            <p>It's practically just a rule set</p>
+            <p>
+              And while the code on the last page took me a bit to come up with,
+              I'll let you know how you can avoid writing it yourself by the end
+              of this talk!
+            </p>
+          </Notes>
+        </CodeSlide>
+        <CodeSlide
+          fit={false}
+          inverted
+          title="Making the async sync"
+          source="sendShamCoin.js">
+          <Notes>
+            <p>
+              Lastly let's look at our server call. Promises helped give us a
+              declarative way to work with a single response, but what if we
+              wanted to have an always up to date value for the last response
+              from the server...?
+            </p>
+          </Notes>
+        </CodeSlide>
+        <CodeSlide
+          fit={false}
+          inverted
+          title="API Magic"
+          source="sendShamCoinRx.js">
+          <Notes>
+            <p>
+              It's surprisingly simple, because of one of Rx's most amazing
+              operators, called SwitchMap
+            </p>
+            <p>
+              If we treat our inputs as observables, and combine them together
+              with combineLatest, we can use SwitchMap to make our api calls,
+              but the amazing thing about switchmap is it will emit when the
+              actual promise resolves, and combine those responses into a
+              stream.
+            </p>
+            <p>
+              So we get an always up to date value of the last server response.
+            </p>
+          </Notes>
+        </CodeSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          title="Starting to come together"
+          image="building-blocks.jpg">
+          <Notes>
+            <p>
+              At this point we have some great architectural building blocks for
+              our view model. We're almost there.
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          fit={false}
+          title={
+            <div>
+              Part 3<br />
+              Signal Graphs
+            </div>
+          }
+          image="grid2.gif">
+          <Notes>
+            <p>
+              We need to start thinking about how all these components fit
+              together.
+            </p>
+            <p>
+              How do we design an architecture to connect user inputs, state
+              changes, service calls, and updating the UI?
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          image="yoda.gif"
+          inverted
+          fit={false}
+          title="Learn by doing">
+          <Notes>
+            Rather than giving a big explanation, let's try see if we can
+            discover a pattern by building some UI with RX
+          </Notes>
+        </ImageSlide>
         <BoxBounce inverted />
         <CodeSlide
           lang="javascript"
-          code={require('!!raw-loader!../assets/buttonStream.js')}
-          ranges={[
-            { loc: [0, 7], title: 'How This Works' },
-            {
-              loc: [0, 10],
-              note: 'Introducing RxJS'
-            },
-            { loc: [10, 13], note: 'Get some dom elements' },
-            {
-              loc: [13, 15],
-              note: 'Create observables from dom events'
-            },
-            {
-              loc: [16, 18],
-              note: 'Convert clicks to a position'
-            },
-            {
-              loc: [18, 22],
-              note: 'Merge values'
-            }
-          ]}
+          source="buttonStream.js"
+          inverted
+          fit={false}
+          title="Everything you need in RX"
           notes={
             <div>
-              <p>So let's look at how this works in code</p>
+              <p>So let's look at how this works</p>
+              <p>Our first step is to look up our DOM elements</p>
               <p>
-                For the rest of the talk, I'll be using a really great
-                observable library called RxJS. Our remaining examples will be
-                in javascript, but there are solid Rx libraries in most major
-                programming languages, and you can apply these patterns to
-                almost any language or context
+                Then, we use `fromEvent` to generate observables from DOM events
               </p>
-              <p>So the first step is to look up our DOM elements</p>
+              <p>we'll use map to convert a click even to a position</p>
               <p>
-                Then, RxJs provides us with `fromEvent` to generate observables
-                from DOM events
+                Finally, we user merge to merge the two position streams, which
+                gives us a stream of the current position of the ball
               </p>
               <p>
-                Next we'll use the map operation convert a click even to a
-                corresponding position
-              </p>
-              <p>
-                Finally, we can use RxJS merge function to merge these two
-                position streams, which gives us a stream of the current
-                position of the ball
+                And that's it -- we did all of this with just Rx, and no other
+                libraries
               </p>
             </div>
           }
         />
-        <ImageSlide image="reallife.gif" title="4. How do I actually use this?">
+        <ImageSlide inverted image="round2.png">
           <Notes>
-            Ok, so you're excited, you've drank the kool-aid in 20 minutes, now
-            you want to use RxJS everywhere, but how?
+            That's pretty awesome but let's see if we can level up and build
+            something more real world
           </Notes>
         </ImageSlide>
-        <RxJsGraphSlide>
-          <Notes>
-            <p>So first, I wanna let you in on a little secret</p>
-            <p>
-              Recently I was at a talk given by Laurie Voss, who works for NPM.
-              He had collected data about packages downloads on NPM and he had
-              this slide showing usage of tools and libraries in the react
-              ecosystem
-            </p>
-            <p>And when I saw it, I was like wait....</p>
-            <p>What's that green line?</p>
-            <p>Isn't that?</p>
-            <p>Holly molly RxJs is more popular than React itself!</p>
-          </Notes>
-        </RxJsGraphSlide>
-        <SimpleSlide statement="You're already using it.">
-          <Notes>
-            <p>
-              As it turns out, RxJS is being depended on directly or indirectly
-              by several popular packages like Angular and ESLint.
-            </p>
-            <p>
-              But the interesting point is that even if these concepts are
-              really new to you, the libraries you depend on depend on RxJS
-            </p>
-          </Notes>
-        </SimpleSlide>
-        <ListSlide
-          ordered={false}
-          title="Two Questions For Using RxJS"
-          list={[
-            'How to architect applications with RxJS?',
-            'How do I integrate this in my application, today?'
-          ]}
-        >
-          <Notes>
-            But if you personally want to use RxJS or an Rx library, we need to
-            answer a couple questions. First, how do real applications actually
-            get architected with this, and second, how would I bring RxJs in the
-            ecosystem of tools I'm already using.
-          </Notes>
-        </ListSlide>
-        <LoginForm />
-        <CodeSlide
+        <LoginForm inverted />
+        <FancyCodeSlide
           lang="javascript"
-          code={require('!!raw-loader!../assets/loginStream.js')}
+          source="loginStream.js"
           ranges={[
             { loc: [0, 7], title: 'But how tho?' },
             {
@@ -827,31 +1016,31 @@ export default class Presentation extends React.Component {
               note: 'Login Attempt = Grab last user + password on each submit '
             },
             {
-              loc: [13, 19],
+              loc: [13, 16],
               note: 'Login Response = the magic of mergeMap'
             },
             {
-              loc: [20, 25],
+              loc: [17, 21],
               note: 'Login In Progress = toggel between attempts + responses'
             },
             {
-              loc: [25, 30],
+              loc: [22, 25],
               note: 'Login Successes = filter responses for successes'
             },
             {
-              loc: [31, 36],
+              loc: [26, 29],
               note: 'Login Failures = same thing!'
             },
             {
-              loc: [37, 45],
+              loc: [30, 34],
               note: 'Failure Message = extract from failures, clear on attempt'
             },
             {
-              loc: [46, 53],
+              loc: [35, 38],
               note: 'User token = extract from login successes'
             },
             {
-              loc: [54, 60],
+              loc: [39, 44],
               note: 'Use token to get a protected resource'
             }
           ]}
@@ -859,12 +1048,14 @@ export default class Presentation extends React.Component {
         <ImageSlide
           image="signals-cia.gif"
           title="Signal Graph"
+          fit={false}
           text="How data propogates through your program"
-        >
+          inverted>
           <Notes>
-            You've seem me draw these diagrams of emissions from observables
-            twice now, as a way to conceptualize how data propogates though a
-            program built with observables. There's a term for this concept.
+            So finally we're starting to see an architectural pattern, and it
+            emerges from the drawings we're making on in each of these examples.
+            We're starting to see a kind of graph emerge of how data propopates
+            through a system with observables. There's a term for this concept.
             It's called a signal graph. The signals are the emissions from
             observables, and the graph is how they're all tied together. This is
             how we architect programs with Observables. Our programs become a
@@ -874,18 +1065,127 @@ export default class Presentation extends React.Component {
           </Notes>
         </ImageSlide>
         <ImageSlide
+          inverted
           image="signal_graph.svg"
-          title="Actual Signal Graph From Real App"
-        >
+          title="Real App Signal Graph"
+          fit={false}>
           <Notes>
             When I'm on teams that write programs with Observables, we actually
             maintain a signal graph as a seperate diagram! Here's an example
             that's part of an actual producton application I worked on.
           </Notes>
         </ImageSlide>
+
+        <ImageSlide
+          fit={false}
+          inverted
+          title="Primary Signals"
+          text="The Subject of the matter..."
+          image="puzzle.jpg">
+          <Notes>
+            The primary signals of your graph are always subjects... I always
+            think of subjects as the puzzle pieces everything plugs into.
+            They're the feeders for your graph.
+          </Notes>
+        </ImageSlide>
+        <ListSlide
+          inverted={true}
+          ordered={false}
+          appear={true}
+          title="Types Of Primary Signals"
+          list={[
+            <span>
+              <strong>Input Signals:</strong> Have data, represent a value,
+              probably a Behavior Subject
+            </span>,
+            <span>
+              <strong>Gate Signals:</strong> No data, represent an event like
+              clicking a button, don't replay - just a Subject
+            </span>
+          ]}></ListSlide>
+        <DefinitionSlide
+          fit={false}
+          inverted
+          term="Derived Signals"
+          definition="A piece of data derived from primary or other derived signals"></DefinitionSlide>
+        <ListSlide
+          inverted={true}
+          ordered={false}
+          appear={true}
+          title="Types Of Derived Signals"
+          list={[
+            <span>
+              <strong>Validation Signals:</strong> run validations on user
+              inputs, produce a set of errors
+            </span>,
+            <span>
+              <strong>Result Signals:</strong> Derive further result data from
+              earlier signals, ignore if results are in error
+            </span>
+          ]}></ListSlide>
+        <ConceptSlide
+          fit={false}
+          inverted
+          concept="Rule #1"
+          description="Signal Graphs is the global state of a program">
+          <Notes>
+            Observables don't always represent global state. They often
+            represent transient operations. Observables in your signal graph are
+            values. They represent the global state.
+          </Notes>
+        </ConceptSlide>
+        <ConceptSlide
+          fit={false}
+          inverted
+          concept="Signal Graphs"
+          description="Connect to components, but live outside">
+          <Notes>
+            That means they connect inside components but they are defined and
+            managed outside
+          </Notes>
+        </ConceptSlide>
+        <CodeSlide
+          lang="javascript"
+          source="shareReplay.js"
+          inverted
+          fit={false}
+          title="Always share replay, start with">
+          <Notes>
+            Because even derived signals are pieces of state, they should always
+            be shared and have an initial value
+          </Notes>
+        </CodeSlide>
+        <ConceptSlide
+          fit={false}
+          inverted
+          concept="Rule #2"
+          description="Push Values To The Edges">
+          <Notes>
+            <p>
+              This ones a bit less obvious, but you find in production, that you
+              almost always have values push to the edges of the graph through
+              all their derived signals, even if they are in error state.
+            </p>
+            <p>That means using Result Types for all your derived signals</p>
+          </Notes>
+        </ConceptSlide>
+        <ConceptSlide
+          fit={false}
+          inverted
+          concept="Best Practice"
+          description="Use Typescript!">
+          <Notes>
+            <p>
+              You don't have to use typescript, but my experience is that
+              signals are so much easier to work with when you know the types
+              match.
+            </p>
+          </Notes>
+        </ConceptSlide>
         <ListSlide
           ordered={true}
           appear={true}
+          inverted
           title="Production Concerns"
           list={[
             'How do I test?',
@@ -893,8 +1193,7 @@ export default class Presentation extends React.Component {
             'Ack RxJs idiosyncracies!',
             'One big graph or lots of smaller ones?',
             'Diagramming is hard'
-          ]}
-        >
+          ]}>
           <Notes>
             <p>
               At Carbon Five we write a lot of code using Signal Graphs.
@@ -928,18 +1227,17 @@ export default class Presentation extends React.Component {
         </ListSlide>
         <ImageSlide
           image="boughtthecompany.jpg"
+          inverted
           text={
             <BlockQuote style={{ textAlign: 'right' }}>
               <Quote
                 style={{ fontSize: '2.66rem' }}
-                textColor={headingColor(false)}
-              >
+                textColor={headingColor(true)}>
                 I liked Signal Graphs so much I bought the company!
               </Quote>
-              <Cite textColor={textColor(false)}>me, 2018</Cite>
+              <Cite textColor={textColor(true)}>me, 2018</Cite>
             </BlockQuote>
-          }
-        >
+          }>
           <Notes>
             And recently I thought, what if we could take all those best
             practices and build a library to encode them so other people could
@@ -948,341 +1246,96 @@ export default class Presentation extends React.Component {
         </ImageSlide>
         <DefinitionSlide
           term="Signal"
-          definition="A library for frontend state management using signal graphs"
-        >
+          definition="A library for frontend state management using signal graphs">
           <Notes>
             So I'd like to tell you about Signal, a library for doing state
             management in your frontend javascript apps with signal graphs
           </Notes>
         </DefinitionSlide>
+        <ConceptSlide
+          fit={false}
+          inverted
+          concept="Very Importat Life Lesson"
+          description="No Releases with talks....">
+          <Notes>
+            <p></p>
+          </Notes>
+        </ConceptSlide>
         <CodeSlide
           lang="javascript"
-          code={require('!!raw-loader!../assets/signal.js')}
-          ranges={[
-            { loc: [0, 7], title: 'Signal!' },
-            { loc: [0, 15], note: 'Your whole graph in one place' },
-            {
-              loc: [39, 46],
-              note: 'Observable factory functions, easily testable'
-            },
-            { loc: [30, 37], note: 'hydrate with initial state' },
-            {
-              loc: [37, 38],
-              note: 'wiring up w/ topological sort, good defaults'
-            },
-            {
-              loc: [47, 52],
-              note: 'connect to other graphs you build'
-            },
-            {
-              loc: [13, 21],
-              note: 'DI with strings like Angular 1???'
-            }
-          ]}
-          notes={
-            <div>
-              <p>
-                Let's take a look at this in the context of the Login example
-              </p>
-              <p>
-                You start in Signal by defining your graph. I'm going to gloss
-                over this DSL a bit, but basically it's listing all the
-                observables that make up the graph and how they relate to each
-                other. Primary signals are the inputs -- the starting
-                observables that are usually tied to user interface elements.
-                Everything after that is a derived signal. The definition is in
-                a single place so you have a nice single reference for the
-                structure of your graph
-              </p>
-              <p>
-                And in terms of the actual operations for your derived signals,
-                you make factory functions like these examples for login
-                attempts and responses. The only difference here is because all
-                the dependent signals are injected, they're really easy to test.
-              </p>
-              <p>
-                One of the common problems with signal graphs is how you hydrate
-                them with an initial state, there's a function to quickly do
-                that for all your signals
-              </p>
-              <p>
-                Finally, you build your graph. And the Signal library handles
-                the whole process of sorting dependencies, and setting up all
-                your observables with good defaults. If have a circular
-                dependency, it'll get caught. If you depend on a signal you
-                didn't define, it'll get caught.
-              </p>
-              <p>
-                To keep your graphs from getting overwhelming, you can define
-                more than one of them, and then connect them up. Here we see an
-                example where the authStatus from our authentication graph gets
-                wired into a different graph that handles fetching protected
-                resources
-              </p>
-              <p>
-                You might be wondering about this Angular 1-ish looking
-                Dependency Injection. I've left Typescript out of all code
-                examples, but I love it, and I write my libraries with it. If
-                you use this library with Typescript you're gonna get some
-                really incredible type bindings that'll prevent you from typing
-                strings wrong or injecting the wrong kinds of observables
-                anywhere. It's pretty amazing cause Typescript's pretty amazing
-              </p>
-            </div>
-          }
-        />
-        <ConceptSlide
+          source="totalAccountValueSignal.js"
+          inverted
           fit={false}
-          concept="Available Now(ish)"
-          description="@rxreact/signal"
-        >
+          title="One line = Observables + Results">
           <Notes>
-            <p>
-              This is available now on npm and don't worry I'm not crimping on
-              my favorite messaging app by stealing it's name. That's why it's
-              under a namespace :) I'll explain why the namespace is RxReact in
-              a second.
-            </p>
-            <p>
-              Caveat is this is not production ready yet. So play but don't
-              adopt just yet.
-            </p>
+            Because even derived signals are pieces of state, they should always
+            be shared and have an initial value
           </Notes>
-        </ConceptSlide>
-        <ConceptSlide
+        </CodeSlide>
+        <CodeSlide
+          lang="javascript"
+          source="bidAmountSignal.js"
+          inverted
           fit={false}
-          concept="Coming Soon"
-          description="Automatic graph visualization"
-        >
+          title="Awesome Reducers">
           <Notes>
-            <p>
-              One thing I haven't been able to do yet but believe is totally
-              possible is to automatically generate real time visualizations of
-              signals moving through the graph like the examples I showed. I
-              think you could get some amazing debugging insights by watching
-              how signals propogate. Those examples you saw are real and totally
-              interactive, but still have to be created by hand. I've got all
-              the pieces but am not there yet.
-            </p>
+            Because even derived signals are pieces of state, they should always
+            be shared and have an initial value
           </Notes>
-        </ConceptSlide>
-        <SimpleSlide statement="Integration">
-          <Notes>
-            So ok, RxJS is a great abstract tool, and now you vaguely understand
-            how you'd use it, but how do your tie it to a trusty javascript MVC?
-          </Notes>
-        </SimpleSlide>
+        </CodeSlide>
         <ListSlide
           ordered={true}
           appear={true}
-          title="Framework = Angular"
-          list={["You're done", 'Check out NgRx']}
-        >
+          inverted
+          title="And More!"
+          list={[
+            'Awesome Graph DI',
+            'Connects To React!',
+            'Great Testing',
+            'Connect Graphs To Graphs',
+            'Stay Tuned!'
+          ]}>
           <Notes>
-            So if you're using Angular, step 1 is nothing. The Angular authors
-            integrated RxJs from the beginning and there's some interesting
-            tooling like NgRx in the ecosystem.
+            <p>
+              At Carbon Five we write a lot of code using Signal Graphs.
+              Obviously there are concerns that come up when you use this in
+              production.
+            </p>
+            <p>You might be wondering how you test your signals</p>
+            <p>
+              Or how you make sure your graphs don't have cycles or missing
+              dependencies
+            </p>
+            <p>
+              Also, RxJs has some idiosycracies I haven't covered here that you
+              might encounter. Google hot/cold observables
+            </p>
+            <p>
+              And then as your program grows if you have just one graph it gets
+              huge.... so maybe you want a few graphs and a way to represent
+              connections
+            </p>
+            <p>
+              And finally, these graph diagrams sure take a lot of time to
+              maintain. Man I thought we were agile why we spending all this
+              time on documentation instead of working software?
+            </p>
+            <p>
+              So we've spent a lot of time at Carbon Five over several projects
+              developing best practices around all of these
+            </p>
           </Notes>
         </ListSlide>
-        <ImageSlide title="But what about React?" image="yodawg.jpg">
-          <Notes>
-            <p>
-              But I use React at my job. And I want to use my React with my
-              reactive programming!
-            </p>
-            <p>
-              That's where this talk started -- wanting to use RxJs with React
-              but using Redux cause I work at a consulting company where I'm
-              can't saddle our client developers who take over my code with a
-              newish technology with minimal tooling.
-            </p>
-          </Notes>
-        </ImageSlide>
-        <ImageSlide title="Good News!" image="kiyoko.gif">
-          <Notes>
-            And that's why I've been working on a lot of tooling for RxJS and
-            React.
-          </Notes>
-        </ImageSlide>
-        <DefinitionSlide
-          term="RxReact"
-          definition="Tools for integrating react with RxJs!"
-        >
-          <Notes>
-            So I want to talk about RxReact, which are a series of tools for
-            integrating RxJS with React. Now, I want to be clear there are
-            actually a bunch of tools out there. This is just one offering and I
-            encourage you to checkout the ecosystem.
-          </Notes>
-        </DefinitionSlide>
-        <CodeSlide
-          lang="javascript"
-          code={require('!!raw-loader!../assets/boxBounceSignal.jsx')}
-          ranges={[
-            {
-              loc: [0, 4],
-              title: 'Signal-connect'
-            },
-            {
-              loc: [2, 3],
-              note: 'Box component, connected to pose animation library'
-            },
-            {
-              loc: [4, 6],
-              note: 'Signal Graph for our ball state'
-            },
-            {
-              loc: [0, 2],
-              note: 'Import connect'
-            },
-            {
-              loc: [6, 13],
-              note: 'Connect outputs to props'
-            },
-            {
-              loc: [13, 22],
-              note: 'Connect inputs as props'
-            },
-            {
-              loc: [22, 37],
-              note: 'More complex example!'
-            }
-          ]}
-          notes={
-            <div>
-              <p>
-                The simplest tool is one I made to connect the Signal Graphs you
-                make with Signal to react components. I call it 'signal-connect'
-              </p>
-              <p>
-                Here is a simple react component. It's the ball from our earlier
-                demo. You can see it takes a simple prop, specifying it's
-                position.
-              </p>
-              <p>
-                And let's say we've defined a singal graph for the state of the
-                ball, using the DSL of Signal
-              </p>
-              <p>
-                Now, we want to first connect the position of the ball to our
-                signal graph. So we import a connect function from RxReact
-              </p>
-              <p>
-                And this function works a lot like the `connect` function from
-                RxReact. You pass it the signalGraph and two parameters. The
-                first parameter represents the 'outputs' of the signal graph. In
-                the object you pass here, any keys become props on the
-                component, that are auto-updated as a signals emit from the
-                graph. In this case, we tie the position prop to the position$
-                signal in the graph.
-              </p>
-              <p>
-                What about sending data back to the graph. Let's look at one of
-                our buttons. This component sends data out. So we need a prop
-                that's a function we can call to send a signal into the graph.
-                That's what the second parameter is for. Here is any key is a
-                prop function you can call and it will generate a new emission
-                on a primary signal in your graph. So in this example, we
-                connect the onClick to the leftClick in graph.
-              </p>
-              <p>
-                And that's basically it, but I want to show you how simple it is
-                to connect a more complex example. This is the entire connection
-                for our login component. Just our inputs and outps. Now there
-                are more complex versions of this which I won't show there, but
-                you actually have all the functionality you'd get in redux's
-                connect
-              </p>
-            </div>
-          }
-        />
-        <ImageSlide
-          title={
-            <div>
-              5.
-              <br />
-              Used Car Sales Portion
-            </div>
-          }
-          image="but-wait-theres-more.jpg"
-        />
-        <DefinitionSlide
-          term="@rxreact/core"
-          definition="RxJs+React on it's own"
-        >
-          <Notes>
-            But let's say you don't want to buy into my signal library. Well the
-            good news is I have a simpler version if you just want to use RxJs
-            and react on their own. I actually wrote this first and it's more
-            stable.
-          </Notes>
-        </DefinitionSlide>
-        <CodeSlide
-          lang="javascript"
-          code={require('!!raw-loader!../assets/boxBounceRxReact.jsx')}
-          ranges={[
-            { loc: [0, 5], title: 'RxReact Demo' },
-            {
-              loc: [2, 3],
-              note: 'Box component, connected to pose animation library'
-            },
-            {
-              loc: [4, 9],
-              note: 'viewModel = connect observables as props (see MVVM)'
-            },
-            {
-              loc: [4, 9],
-              note: 'each input is an observable that becomes a prop'
-            },
-            {
-              loc: [0, 1],
-              note: "withViewModel = RxReact's core function"
-            },
-            {
-              loc: [10, 11],
-              note: "withViewModel is a HOC (like react-redux's connect!)"
-            },
-            {
-              loc: [12, 17],
-              note: 'each output is a subject that becomes a callable function!'
-            },
-            {
-              loc: [12, 17],
-              note: '(think mapDispatchToProps)'
-            },
-            {
-              loc: [18, 31]
-            }
-          ]}
-        />
-        <ImageSlide
-          title="What about TypeScript?"
-          image="securityofyourshit.gif"
-        />
-        <SimpleSlide
-          statement={
-            <span>
-              RxReact <span role="img">💖</span>
-              Typescript
-            </span>
-          }
-        />
-        <SimpleSlide statement="View Model as Reducer?" />
-        <CodeSlide
-          lang="javascript"
-          code={require('!!raw-loader!../assets/rxReactReducer.js')}
-          ranges={[{ loc: [0, 19] }]}
-        />
-        <SimpleSlide statement="@rxreact/process" />
         <ImageSlide
           inverted
+          fit={false}
           title="That's all folks!"
           image="slushie.gif"
           text={
             <div>
-              reactivex-talk.techgirlwonder.com
+              rxjslive-talk.techgirlwonder.com
               <br />
-              github.com/hannahhoward/reactivex-talk
+              github.com/hannahhoward/rxjslive-talk
             </div>
           }
         />

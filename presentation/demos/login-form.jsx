@@ -17,8 +17,8 @@ import asSlide from '../slideTemplates/as-slide'
 import FullScreen from '../slideTemplates/full-screen'
 import colors from '../slideTemplates/colors'
 import { Signalize, SignalComponent } from './visualizer/Signal'
-import { Appear, Notes } from 'spectacle'
-
+import { Appear } from 'spectacle'
+import { Notes } from '../slideTemplates/components.jsx'
 const api = {
   login: ({ username, password }) => {
     if (username === 'rxjs' && password === 'awesome') {
@@ -181,6 +181,9 @@ const Panes = styled.div`
   align-items: stretch;
 `
 
+const MyLabel = styled.label`
+  color: ${colors.tertiary};
+`
 const LoginForm = ({
   loginInProgress,
   loginFailureMessage,
@@ -197,7 +200,7 @@ const LoginForm = ({
   return (
     <FormPen onSubmit={onSubmit}>
       <Column>
-        <label htmlFor="username">User name:</label>
+        <MyLabel htmlFor="username">User name:</MyLabel>
         <input
           type="text"
           id="username"
@@ -208,7 +211,7 @@ const LoginForm = ({
         />
       </Column>
       <Column>
-        <label htmlFor="password">Password:</label>
+        <MyLabel htmlFor="password">Password:</MyLabel>
         <input
           type="text"
           id="password"
@@ -245,7 +248,9 @@ const ConnectedLoginForm = withViewModel({
 
 const SVGText = styled.text`
   fill: ${colors.tertiary};
-  font-size: 16px;
+  font-size: 26px;
+  font-weight: 100;
+  font-family: 'Helvetica';
 `
 const SVGBox = styled.rect`
   fill: ${colors.secondary};
@@ -257,7 +262,7 @@ const SVGNode = ({ x, y, textLines, height, width, children }) => {
       <SVGBox x={x} y={y} height={height} width={width} />
       <SVGText>
         {textLines.map((textLine, index) => (
-          <tspan x={x + 10} y={y + 30 + index * 20} key={index}>
+          <tspan x={x + 10} y={y + 33 + index * 20} key={index}>
             {textLine}
           </tspan>
         ))}
@@ -287,18 +292,18 @@ const PathToLines = ({ paths }) => {
                       y2: path[index + 1].coord.y + 10
                     }
                   : pathObj.edge === 'right'
-                    ? {
-                        x1: index === 0 ? item.coord.x : item.coord.x - 10,
-                        y1: item.coord.y + 10,
-                        x2: path[index + 1].coord.x - 10,
-                        y2: path[index + 1].coord.y + 10
-                      }
-                    : {
-                        x1: index === 0 ? item.coord.x : item.coord.x - 10,
-                        y1: item.coord.y - 30,
-                        x2: path[index + 1].coord.x - 10,
-                        y2: path[index + 1].coord.y - 30
-                      }
+                  ? {
+                      x1: index === 0 ? item.coord.x : item.coord.x - 10,
+                      y1: item.coord.y + 10,
+                      x2: path[index + 1].coord.x - 10,
+                      y2: path[index + 1].coord.y + 10
+                    }
+                  : {
+                      x1: index === 0 ? item.coord.x : item.coord.x - 10,
+                      y1: item.coord.y - 30,
+                      x2: path[index + 1].coord.x - 10,
+                      y2: path[index + 1].coord.y - 30
+                    }
               return (
                 <line
                   x1={x1}
@@ -319,8 +324,10 @@ const PathToLines = ({ paths }) => {
 }
 
 const StyledSignalComponent = styled(SignalComponent)`
-  fill: ${colors.secondary};
+  fill: ${colors.primary};
   font-size: 16px;
+  font-family: 'Helvetica';
+  letter-spacing: 0.05em;
 `
 
 const SignalNode = ({ x, y, textLines, height, width, paths, children }) => (
@@ -376,8 +383,7 @@ const makeSignalNode = (
       textLines={textLines}
       height={height}
       width={width}
-      paths={signalPaths}
-    >
+      paths={signalPaths}>
       {Signals.map(Signal => (
         <Signal />
       ))}
@@ -401,12 +407,12 @@ const UsernameSignal = makeSignalNode(
         },
         {
           duration: 500,
-          coord: { x: 190, y: 110 }
+          coord: { x: 245, y: 110 }
         }
       ]
     }
   ],
-  110,
+  150,
   50,
   0,
   0,
@@ -429,14 +435,14 @@ const PasswordSignal = makeSignalNode(
         },
         {
           duration: 500,
-          coord: { x: 70, y: 80 }
+          coord: { x: 90, y: 80 }
         }
       ]
     }
   ],
-  110,
+  140,
   50,
-  120,
+  160,
   0,
   ['Password']
 )
@@ -458,9 +464,9 @@ const SubmitButtonSignal = makeSignalNode(
       ]
     }
   ],
-  140,
+  186,
   50,
-  240,
+  322,
   0,
   ['Submit Button']
 )
@@ -491,18 +497,18 @@ const LoginAttemptsSignal = makeSignalNode(
         },
         {
           duration: 500,
-          coord: { x: 180, y: 0 }
+          coord: { x: 210, y: 0 }
         },
         {
           duration: 500,
-          coord: { x: 180, y: 150 }
+          coord: { x: 210, y: 150 }
         }
       ]
     }
   ],
-  140,
+  200,
   50,
-  240,
+  315,
   125,
   ['Login Attempts']
 )
@@ -531,11 +537,11 @@ const LoginResponsesSignal = makeSignalNode(
         },
         {
           duration: 500,
-          coord: { x: 70, y: 0 }
+          coord: { x: 100, y: 0 }
         },
         {
           duration: 500,
-          coord: { x: 70, y: 50 }
+          coord: { x: 100, y: 50 }
         }
       ]
     },
@@ -547,18 +553,18 @@ const LoginResponsesSignal = makeSignalNode(
         },
         {
           duration: 500,
-          coord: { x: -110, y: 0 }
+          coord: { x: -155, y: 0 }
         },
         {
           duration: 500,
-          coord: { x: -110, y: 50 }
+          coord: { x: -155, y: 50 }
         }
       ]
     }
   ],
-  160,
+  220,
   50,
-  230,
+  305,
   225,
   ['Login Responses']
 )
@@ -580,9 +586,9 @@ const LoginInProgressSignal = makeSignalNode(
       ]
     }
   ],
-  160,
+  220,
   50,
-  410,
+  550,
   300,
   ['Login In Progress']
 )
@@ -604,9 +610,9 @@ const LoginFailuresSignal = makeSignalNode(
       ]
     }
   ],
-  140,
+  186,
   50,
-  40,
+  47,
   300,
   ['Login Failures']
 )
@@ -628,9 +634,9 @@ const LoginSuccessesSignal = makeSignalNode(
       ]
     }
   ],
-  150,
+  220,
   50,
-  235,
+  305,
   325,
   ['Login Successes']
 )
@@ -652,7 +658,7 @@ const LoginFailureMessageSignal = makeSignalNode(
       ]
     }
   ],
-  150,
+  210,
   50,
   35,
   400,
@@ -675,9 +681,9 @@ const UserTokenSignal = makeSignalNode(
       ]
     }
   ],
-  110,
+  156,
   50,
-  280,
+  336,
   475,
   ['User Token']
 )
@@ -699,9 +705,9 @@ const GetProtectedSignal = makeSignalNode(
       ]
     }
   ],
-  140,
+  186,
   50,
-  470,
+  552,
   475,
   ['Get Protected']
 )
@@ -723,16 +729,17 @@ const ProtectedResourceSignal = makeSignalNode(
       ]
     }
   ],
-  180,
+  256,
   50,
-  450,
+  517,
   575,
   ['Protected Resource']
 )
 
 const SVGResultText = styled.text`
   fill: ${colors.secondary};
-  font-size: 16px;
+  font-size: 24px;
+  font-family: 'Helvetica';
 `
 const SVGResultBox = styled.rect`
   fill: ${colors.tertiary};
@@ -743,7 +750,7 @@ const SVGResultNode = ({ x, y, result, height, width }) => {
     <g>
       <SVGResultBox x={x} y={y} height={height} width={width} />
       <SVGResultText>
-        <tspan x={x + 10} y={y + 30}>
+        <tspan x={x + 10} y={y + 33}>
           {result}
         </tspan>
       </SVGResultText>
@@ -806,7 +813,7 @@ const LoginDemo = () => (
             <LoginInProgressSignal />
             <LoginFailuresSignal />
             <LoginSuccessesSignal />
-            <LoginInProgressResult x={430} y={385} height={50} width={100} />
+            <LoginInProgressResult x={610} y={385} height={50} width={100} />
           </g>
         </Appear>
         <Appear>
@@ -821,7 +828,7 @@ const LoginDemo = () => (
           <g>
             <GetProtectedSignal />
             <ProtectedResourceSignal />
-            <ProtectedResourceResult x={200} y={575} height={50} width={150} />
+            <ProtectedResourceResult x={290} y={575} height={50} width={150} />
           </g>
         </Appear>
       </svg>

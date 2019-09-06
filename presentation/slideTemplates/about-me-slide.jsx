@@ -50,11 +50,11 @@ const AboutMeSlide = ({ children }) => {
           Hannah Howard #AboutMe
         </Heading>
       </Row>
-      <Row>
+      <Row style={{ maxHeight: '90%' }}>
         <Appear order={0}>
           <Column>
             <Image src={tgwLogo} style={imageStyle} />
-            <Text>
+            <Text textColor="secondary">
               @techgirlwonder
               <br />
               she/her
@@ -64,7 +64,7 @@ const AboutMeSlide = ({ children }) => {
         <Appear order={1}>
           <Column>
             <Image src={c5Logo} style={imageStyle} />
-            <Text style={{ wordBreak: 'break-word' }}>
+            <Text textColor="secondary" style={{ wordBreak: 'break-word' }}>
               hannah@carbonfive.com
             </Text>
           </Column>
@@ -72,7 +72,7 @@ const AboutMeSlide = ({ children }) => {
         <Appear order={2}>
           <Column>
             <Image src={poohBear} style={imageStyle} />
-            <Text>Personal Anecdote: I have a dog</Text>
+            <Text textColor="secondary">Personal Anecdote: I have a dog</Text>
           </Column>
         </Appear>
       </Row>

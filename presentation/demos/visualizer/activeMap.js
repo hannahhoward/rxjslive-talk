@@ -1,18 +1,16 @@
-import {
-  scan,
-  mergeMap,
-  map,
-  materialize
-} from 'rxjs/operators';
+import { scan, mergeMap, map, materialize } from 'rxjs/operators'
 
-const activeMap = (mapFn) => (source) =>
+const activeMap = mapFn => source =>
   source.pipe(
-    scan((acc, value) => ({
-      value,
-      index: acc.index + 1
-    }), {
-      index: -1
-    }),
+    scan(
+      (acc, value) => ({
+        value,
+        index: acc.index + 1
+      }),
+      {
+        index: -1
+      }
+    ),
     mergeMap((value, index) =>
       mapFn(value).pipe(
         materialize(),
@@ -22,26 +20,21 @@ const activeMap = (mapFn) => (source) =>
         }))
       )
     ),
-    scan((acc, {
-      index,
-      notification
-    }) => {
+    scan((acc, { index, notification }) => {
       switch (notification.kind) {
-        case "C":
-          const newAcc = Object.assign({}, acc);
-          delete newAcc[index];
-          return newAcc;
-        case "N":
+        case 'C':
+          const newAcc = Object.assign({}, acc)
+          delete newAcc[index]
+          return newAcc
+        case 'N':
           if (notification.hasValue === true) {
-            return { ...acc,
-              [index]: notification.value
-            }
+            return { ...acc, [index]: notification.value }
           }
-        case "E":
-          throw notification.error;
+        case 'E':
+          throw notification.error
       }
     }, {}),
-    map(active => Object.keys(active).map(key => active[key])),
-  );
+    map(active => Object.keys(active).map(key => active[key]))
+  )
 
-export default activeMap;
+export default activeMap

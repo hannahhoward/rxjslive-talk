@@ -9,7 +9,7 @@
     "deploy": "npm run build && surge -p .",
     "export": "spectacle-renderer --delay 3000",
     "lint": "eslint --ext .js,.jsx .",
-    "start": "cross-env NODE_ENV=development node server.js"
+    "start": "cross-env NODE_ENV=development node --max_old_space_size=4096 server.js"
   },
   "author": "Formidable Labs <hello@formidable.com> (https://formidable.com)",
   "prettier": {
@@ -22,8 +22,8 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/runtime": "^7.1.2",
     "@beyonk/google-fonts-webpack-plugin": "^1.2.3",
-    "google-fonts-webpack-plugin": "^0.4.4",
     "@rxreact/core": "^5.1.1",
+    "google-fonts-webpack-plugin": "^0.4.4",
     "normalize.css": "8.0.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
@@ -31,7 +31,8 @@
     "spectacle": "^5.5.0",
     "spectacle-code-slide": "^0.5.2",
     "spectacle-renderer": "^0.0.3",
-    "styled-components": "^3.4.2"
+    "styled-components": "^3.4.2",
+    "use-media-query-hook": "^0.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",

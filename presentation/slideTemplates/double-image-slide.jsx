@@ -33,7 +33,7 @@ const DoubleImageSlide = ({
   return (
     <FullScreen column>
       {!!title && (
-        <div style={{ width: 1000 }}>
+        <div>
           <Heading
             size={size}
             fit={fit}
@@ -56,7 +56,7 @@ const DoubleImageSlide = ({
         <Image style={imageStyle} src={imageSrc2} />
       </div>
       {!!text && (
-        <div style={{ width: 1000 }}>
+        <div>
           <Text textColor={textColor(inverted)} style={{ marginTop: '.5em' }}>
             {text}
           </Text>

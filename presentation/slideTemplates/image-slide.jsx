@@ -34,19 +34,19 @@ const ImageSlide = ({
     height: 'auto',
     width: 'auto',
     maxWidth: '100%',
-    top: title ? '10%' : '0%',
-    maxHeight: title ? '90%' : '100%'
+    top: '0%',
+    maxHeight: '100%'
   }
   return (
     <FullScreen column>
       {!!title && (
-        <div style={{ width: 1000 }}>
+        <div>
           <Heading
             size={size}
             fit={fit}
             caps={caps}
             textColor={headingColor(inverted)}
-            style={{ marginBottom: '.5em' }}>
+            style={{ marginBottom: '0.1em' }}>
             {title}
           </Heading>
         </div>
@@ -61,7 +61,7 @@ const ImageSlide = ({
         <Image style={thisImageStyle} src={imageSrc} />
       </div>
       {!!text && (
-        <div style={{ width: 1000 }}>
+        <div>
           <Text textColor={textColor(inverted)} style={{ marginTop: '.5em' }}>
             {text}
           </Text>
@@ -79,7 +79,7 @@ ImageSlide.propTypes = {
   inverted: PropTypes.bool,
   size: PropTypes.number.isRequired,
   text: PropTypes.node,
-  title: PropTypes.string
+  title: PropTypes.node
 }
 
 ImageSlide.defaultProps = {

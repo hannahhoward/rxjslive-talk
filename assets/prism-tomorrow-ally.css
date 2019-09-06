@@ -39,6 +39,10 @@
    background: #000000;
  }
  
+ pre[class*="language-"].builtin-prism-theme {
+   background: #000000 !important
+ }
+
  /* Inline code */
  :not(pre) > code[class*="language-"] {
    padding: .1em;
@@ -50,7 +54,7 @@
  .token.prolog,
  .token.doctype,
  .token.cdata {
-   color: #999;
+   color: #ADA8C5 !important;
  }
  
  .token.punctuation {

@@ -1,22 +1,18 @@
-import activeMap from "./activeMap";
-import tweenPath from "./tweenPath";
-import {
-  from
-} from "rxjs";
-import {
-  map
-} from "rxjs/operators";
+import activeMap from './activeMap'
+import tweenPath from './tweenPath'
+import { from } from 'rxjs'
+import { map } from 'rxjs/operators'
 
 const observablePathEmitter = (source$, path) =>
   source$.pipe(
-    activeMap((value) =>
+    activeMap(value =>
       tweenPath(from(path)).pipe(
-        map((coord) => ({
+        map(coord => ({
           value,
           coord
         }))
       )
     )
-  );
+  )
 
-export default observablePathEmitter;
+export default observablePathEmitter

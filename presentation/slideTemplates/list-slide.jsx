@@ -51,7 +51,7 @@ ListSlide.propTypes = {
   caps: PropTypes.bool.isRequired,
   fit: PropTypes.bool.isRequired,
   inverted: PropTypes.bool,
-  list: PropTypes.arrayOf(PropTypes.string).isRequired,
+  list: PropTypes.arrayOf(PropTypes.node).isRequired,
   ordered: PropTypes.bool,
   size: PropTypes.number.isRequired,
   title: PropTypes.node.isRequired,
@@ -60,7 +60,7 @@ ListSlide.propTypes = {
 
 ListSlide.defaultProps = {
   inverted: false,
-  size: 4,
+  size: 3,
   fit: false,
   caps: true,
   ordered: true,

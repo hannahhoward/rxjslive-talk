@@ -23,7 +23,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new GoogleFontsPlugin({
       fonts: googleFonts
-      /* ...options */
+      /*...options */
     })
   ],
   module: {
